@@ -1,0 +1,11 @@
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%files
+    pandas_example.py /
+
+%post
+    /opt/conda/bin/conda install pandas -y
+
+%runscript
+    python /pandas_example.py "$@"

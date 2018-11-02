@@ -1,0 +1,252 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/northwestern.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+                <section>
+                    <h2>Introduction to Singularity Containers</h2>
+                    <p>Northwestern IT Research Computing Services</p>
+                </section>
+
+                <section>
+                    <h2>Matthew Rich</h2>
+                    <p>m-rich@northwestern.edu</p>
+                    <p>(Or just look me up in the NU Directory)</p>
+                </section>
+
+                <section>
+                    <h4>Containers</h4>
+                    <p>Process isolation was possible but fiddly and limited for decades.</p>
+                    <p class="fragment">Until Docker was announced in 2013.</p>
+                    <p class="fragment">Docker offered relatively easy to use tools and better filesystem isolation.</p>
+                </section>
+
+                <section>
+                    <h4>The Docker ecosystem</h4>
+                    <p>Image repositories: Docker Hub, Biocontainers, private</p>
+                    <p class="fragment">Runtimes: single host, multi-host cluster, managed clusters</p>
+                    <p class="fragment">Standardization: image format and runtime environment</p>
+                </section>
+
+                <section>
+                    <h4>Docker vs traditional HPC</h4>
+                    <p>Docker runs as root!</p>
+                    <p class="fragment">This is a no-go for shared computing resources like Quest</p>
+                </section>
+
+                <section>
+                    <h4>Singularity</h4>
+                    <p>Singularity is an alternative container technology designed for traditional HPC environments.</p>
+                    <p>http://singularity.lbl.gov/</p>
+                </section>
+
+                <section>
+                    <h4>Singularity gives you greater control of the runtime environment.</h4>
+                    <p class="fragment">The running container will have <em>exactly</em> the environment defined in the image.</p>
+                    <p class="fragment">"Bind mounts" make the host's filesystem accessible inside the container.</p>
+                </section>
+
+                <section>
+                    <h4>Singularity can use your HPC's resources natively.</h4>
+                    <p class="fragment">Singularity containers can be run like any other command in a batch job.</p>
+                    <p class="fragment">Singularity supports GPU hardware via the <code>--nv</code> flag.</p>
+                    <p class="fragment">MPI works seamlessly within a Singularity container (provided OpenMPI is installed).</p>
+                </section>
+
+                <section>
+                    <h4>Getting Singularity Images</h4>
+                    <p>Singularity can pull images from the Docker Hub:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity pull -n ubuntu.sif docker://ubuntu
+                    </code></pre>
+                    <p>This will create a singularity image file called <code>ubuntu.sif</code>.</p>
+                </section>
+
+                <section>
+                <h4>Getting Singularity Images</h4>
+                    <p>Singularity can pull images from the Singularity Hub:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity pull -n biobakery.sif shub://nuitrcs/biobakery
+                    </code></pre>
+                    <p>https://www.singularity-hub.org/</p>
+                </section>
+
+                <section>
+                    <h4>Getting Singularity Images</h4>
+                    <p>You can build your own Singularity images with "recipe files".</p>
+                    <pre class="clean"><code data-trim data-noescape>
+                            Bootstrap: docker
+                            From: ubuntu
+
+                            %post
+                                apt-get update
+                                apt-get upgrade -y
+                            
+                            %runscript
+                                echo "Hello from a Singularity container!"
+                    </code></pre>
+                    <p class="fragment">Images cannot be built on Quest.</p>
+                </section>
+
+                <section>
+                    <h4>Singularity Hub</h4>
+                    <p>https://www.singularity-hub.org/</p>
+                    <p>The Singularity Hub provides free image hosting and building.</p>
+                    <p class="fragment">Put a <code>Singularity</code> file in a GitHub repository and the Singularity Hub will build it automatically!</p>
+                </section>
+
+                <section>
+                    <h4>Running Singularity Containers</h4>
+                    <p>Run an interactive shell in a container with the <code>shell</code> subcommand:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity shell ubuntu.sif
+                    Singularity: Invoking an interactive shell within container...
+
+                    Singularity ubuntu.sif:~>
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Running Singularity Containers</h4>
+                    <p>Run the image's default command with <code>run</code>:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity run shub://nuitrcs/hello-world
+                    Hello world!
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Running Singularity Containers</h4>
+                    <p>Specify the exact command to run with <code>exec</code>:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity exec docker://ubuntu cat /etc/lsb-release
+                    DISTRIB_ID=Ubuntu
+                    DISTRIB_RELEASE=18.04
+                    DISTRIB_CODENAME=bionic
+                    DISTRIB_DESCRIPTION="Ubuntu 18.04.1 LTS"
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Binding Directories</h4>
+                    <p>Singularity allows you to map directories on the <i>host</i> system (Quest) to directories in the container.</p>
+                    <p class="fragment">This lets software in a container access files on the host.</p>
+                    <p class="fragment"><code>$HOME</code> and <code>$TMP</code> are mapped by default.</p>
+                </section>
+
+                <section>
+                    <h4>Binding Directories</h4>
+                    <p>Use the <code>-B</code> flag to map additional directories:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity shell -B /projects/pXXXXX:/project ubuntu.sif
+                    Singularity: Invoking an interactive shell within container...
+
+                    Singularity ubuntu.sif:~> ls /project
+                    </code></pre>
+                    <p class="fragment">You have the same permissions inside the container as on the host.</p>
+                </section>
+
+                <section>
+                    <h4>Exercise 0:</h4>
+                    <p>SSH to the workshop server, create a directory, and <code>cd</code> into it.</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                        $ ssh &lt;netid&gt;@singularity-workshop.rcs.northwestern.edu
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Exercise 1:</h4>
+                    <p>Pull an image from the Docker Hub.</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                        $ singularity pull docker://python
+                    </code></pre>
+                    <p class="fragment">How big is the file in mb?</p>
+                    <p class="fragment">What happens if you execute the file?</p>
+                </section>
+
+                <section>
+                    <h4>Exercise 2:</h4>
+                    <p>Pull an ubuntu image and run a shell inside it.</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                        $ singularity shell docker://ubuntu
+                    </code></pre>
+                    <p class="fragment">Try listing the files in your <code>$HOME</code> directory.</p>
+                    <p class="fragment">Try creating a file in your <code>$HOME</code> directory.</p>
+                    <p class="fragment">Try creating a file in <code>/etc</code>.</p>
+                    <p class="fragment">Where is the image file?</p>
+                </section>
+
+                <section>
+                    <h4>Exercise 3:</h4>
+                    <p>Build an image from a recipe file.</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                        $ sudo singularity build pandas_example.sif pandas_example.def
+                        $ singularity run pandas_example.sif Evanston_Arrests.csv
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Exercise 4:</h4>
+                    <p>On Quest, pull a bioinformatics image and run it.</p>
+                    <p>SSH to Quest and run the commands below:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                        $ singularity pull docker://biocontainers/blast
+                        $ singularity exec blast_latest.sif makeblastdb -in zebrafish.1.protein.faa -dbtype prot
+                        $ singularity exec blast_latest.sif blastp -query P04156.fasta -db zebrafish.1.protein.faa -out results.txt
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Questions?</h4>
+                    <p>m-rich@northwestern.edu</p>
+                </section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+                history: true,
+                math: {
+                    mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+                    config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+                },
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/math/math.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
