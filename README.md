@@ -9,6 +9,7 @@ If you do not have Singularity installed on your local machine, use the temporar
 
     ssh tempuserXX@singularity-workshop.rcs.northwestern.edu
 
+The workshop slides are available here: [https://nuitrcs.github.io/singularity-workshop/#/](https://nuitrcs.github.io/singularity-workshop/)
 
 ## Resources
 
