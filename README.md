@@ -5,8 +5,19 @@ workshop at Northwestern University on November 15th, 2018.
 
 ## Getting Started
 
+If you do not have Singularity installed on your local machine, use the temporary credentials your instructor gives you to ssh to singularity-workshop.rcs.northwestern.edu:
+
+    ssh tempuserXX@singularity-workshop.rcs.northwestern.edu
+
+
 ## Resources
 
-http://www.sdsc.edu/support/user_guides/tutorials/singularity.html
-https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/singularity/singularityintro.html
-https://docs.hpc.arizona.edu/display/UAHPC/Singularity+Tutorials
+- [Singularity Documentation](https://www.sylabs.io/docs/)
+- [Singularity Hub](https://www.singularity-hub.org/)
+- [Docker Hub](https://hub.docker.com/)
+- [BioContainers Project](https://biocontainers.pro/)
+
+### Other Singularity Tutorials
+- [SDSC Singularity Tutorial](http://www.sdsc.edu/support/user_guides/tutorials/singularity.html)
+- [Container Camp 2018 Intro to Singularity](https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/singularity/singularityintro.html)
+- [University of Arizona HPC Singularity Tutorial](https://docs.hpc.arizona.edu/display/UAHPC/Singularity+Tutorials)
