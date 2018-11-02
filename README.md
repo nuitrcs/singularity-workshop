@@ -16,6 +16,7 @@ If you do not have Singularity installed on your local machine, use the temporar
 - [Singularity Hub](https://www.singularity-hub.org/)
 - [Docker Hub](https://hub.docker.com/)
 - [BioContainers Project](https://biocontainers.pro/)
+- [Using Singularity on Quest (Northwestern KB)](https://kb.northwestern.edu/page.php?id=85614)
 
 ### Other Singularity Tutorials
 - [SDSC Singularity Tutorial](http://www.sdsc.edu/support/user_guides/tutorials/singularity.html)
