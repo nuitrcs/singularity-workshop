@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH -A w10001
-#SBATCH -p short
+#SBATCH -p w10001
 #SBATCH -t 00:30:00
 #SBATCH -N 1
 #SBATCH -n 1
