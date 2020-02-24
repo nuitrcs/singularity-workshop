@@ -1,13 +1,13 @@
 # Software Containers With Singularity
 
 This repository contains materials for the Software Containers with Singularity
-workshop at Northwestern University on November 15th, 2018.
+workshop at Northwestern University.
 
 ## Getting Started
 
 If you do not have Singularity installed on your local machine, use the temporary credentials your instructor gives you to ssh to singularity-workshop.rcs.northwestern.edu:
 
-    ssh tempuserXX@singularity-workshop.rcs.northwestern.edu
+    ssh tempuserXX@quest.northwestern.edu
 
 The workshop slides are available here: [https://nuitrcs.github.io/singularity-workshop/](https://nuitrcs.github.io/singularity-workshop/)
 
