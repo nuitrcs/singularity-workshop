@@ -66,7 +66,7 @@
                 <section>
                     <h4>Singularity</h4>
                     <p>Singularity is an alternative container technology designed for traditional HPC environments.</p>
-                    <p>http://singularity.lbl.gov/</p>
+                    <p>https://sylabs.io/singularity/</p>
                 </section>
 
                 <section>
@@ -83,45 +83,65 @@
                 </section>
 
                 <section>
+                    <h4>Singularity is available on Quest!</h4>
+                    <pre class="bash"><code data-trim data-noescape>
+                        $ module load singularity
+                    </code></pre>
+                </section>
+
+                <section>
                     <h4>Getting Singularity Images</h4>
                     <p>Singularity can pull images from the Docker Hub:</p>
                     <pre class="bash"><code data-trim data-noescape>
-                    $ singularity pull -n ubuntu.sif docker://ubuntu
+                    $ singularity pull ubuntu.sif docker://ubuntu
                     </code></pre>
                     <p>This will create a singularity image file called <code>ubuntu.sif</code>.</p>
                 </section>
 
                 <section>
-                <h4>Getting Singularity Images</h4>
+                    <h4>Getting Singularity Images</h4>
                     <p>Singularity can pull images from the Singularity Hub:</p>
                     <pre class="bash"><code data-trim data-noescape>
-                    $ singularity pull -n biobakery.sif shub://nuitrcs/biobakery
+                    $ singularity pull shub://nuitrcs/biobakery
                     </code></pre>
                     <p>https://www.singularity-hub.org/</p>
+                    <p>Note: The Singularity Hub is an unsupported, community project.</p>
+                </section>
+
+                <section>
+                    <h4>Getting Singularity Images</h4>
+                    <p>Singularity can pull images from the Singularity Library:</p>
+                    <pre class="bash"><code data-trim data-noescape>
+                    $ singularity pull library://library/default/ubuntu:18.04
+                    </code></pre>
+                    <p>https://cloud.sylabs.io/library/</p>
+                    <p>Note: The Singularity Library is supported by Sylabs.</p>
                 </section>
 
                 <section>
                     <h4>Getting Singularity Images</h4>
                     <p>You can build your own Singularity images with "recipe files".</p>
                     <pre class="clean"><code data-trim data-noescape>
-                            Bootstrap: docker
-                            From: ubuntu
-
-                            %post
-                                apt-get update
-                                apt-get upgrade -y
-                            
-                            %runscript
-                                echo "Hello from a Singularity container!"
+                        Bootstrap: docker
+                        From: continuumio/miniconda3
+                        
+                        %environment
+                            export LC_ALL=C
+                        
+                        %post
+                            /opt/conda/bin/conda install pandas matplotlib
+                        
+                        %runscript
+                            python
                     </code></pre>
                     <p class="fragment">Images cannot be built on Quest.</p>
                 </section>
 
                 <section>
-                    <h4>Singularity Hub</h4>
-                    <p>https://www.singularity-hub.org/</p>
-                    <p>The Singularity Hub provides free image hosting and building.</p>
-                    <p class="fragment">Put a <code>Singularity</code> file in a GitHub repository and the Singularity Hub will build it automatically!</p>
+                    <h4>Sylabs Remote Builder</h4>
+                    <p>https://cloud.sylabs.io/builder</p>
+                    <p>Sylabs provides free image hosting and building.</p>
+                    <p class="fragment">Paste in a def file or use <span class="code">singularity build --remote</span>!</p>
                 </section>
 
                 <section>
@@ -179,7 +199,7 @@
                     <h4>Exercise 0:</h4>
                     <p>SSH to the workshop server.</p>
                     <pre class="bash"><code data-trim data-noescape>
-                        $ ssh tempuserXX@singularity-workshop.rcs.northwestern.edu
+                        $ ssh tempuserXX@quest.northwestern.edu
                     </code></pre>
                 </section>
 
@@ -208,10 +228,11 @@
                 <section>
                     <h4>Exercise 3:</h4>
                     <p>Build an image from a recipe file.</p>
+                    <p>First visit https://cloud.sylabs.io/builder and generate and save auth token.</p>
                     <pre class="bash"><code data-trim data-noescape>
                         $ git clone https://github.com/nuitrcs/singularity-workshop.git
                         $ cd singularity-workshop/pandas-example
-                        $ sudo singularity build pandas_example.sif pandas_example.def
+                        $ singularity build --remote pandas_example.sif pandas_example.def
                         $ singularity run pandas_example.sif Evanston_Arrests.csv
                     </code></pre>
                 </section>
@@ -221,7 +242,7 @@
                     <p>Pull a bioinformatics image and run it.</p>
                     <pre class="bash"><code data-trim data-noescape>
                         $ singularity pull docker://biocontainers/blast
-                        $ cp /data/* . # copy zebrafish.1.protein.faa and P04156.fasta to cwd
+                        $ cp /projects/w10001/data/* . # copy zebrafish.1.protein.faa and P04156.fasta to cwd
                         $ singularity exec blast_latest.sif makeblastdb \
                             -in zebrafish.1.protein.faa -dbtype prot
                         $ singularity exec blast_latest.sif blastp \
@@ -232,8 +253,7 @@
 
                 <section>
                 <h4>Exercise 5:</h4>
-                    <p>On Quest, submit a batch job that uses Singularity.</p>
-                    <p>SSH to Quest as tempuserNN and run the command below:</p>
+                    <p>Submit a batch job that uses Singularity.</p>
                     <pre class="bash"><code data-trim data-noescape>
                         $ msub /projects/w10001/singularity-workshop/batch_example.sh
                     </code></pre>
