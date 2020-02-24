@@ -24,4 +24,4 @@ singularity pull blast.sif docker://biocontainers/blast:2.2.31
 # cd to the directory from where this job was submitted (where we want to write the output)
 singularity exec -B $DATADIR:/data,$OUTPUTDIR:/output blast.sif makeblastdb -in /data/orf_trans.fasta -out /output/orf_trans -dbtype prot -title "Yeast Open Reeading Frames" -parse_seqids
 
-singularity exec -B $DATADIR:/dataOUTPUTDIR:/output blast.sif blastp -query /data/orf_trans.fasta -db /output/orf_trans -max_target_seqs 2 -max_hsps 1 -evalue 1e-6 -outfmt '7 qseqid sseqid length qlen slen qstart qend sstart send evalue' -out /output/yeast_blastp_yeast_top2.txt -num_threads 1
+singularity exec -B $DATADIR:/data,$OUTPUTDIR:/output blast.sif blastp -query /data/orf_trans.fasta -db /output/orf_trans -max_target_seqs 2 -max_hsps 1 -evalue 1e-6 -outfmt '7 qseqid sseqid length qlen slen qstart qend sstart send evalue' -out /output/yeast_blastp_yeast_top2.txt -num_threads 1
