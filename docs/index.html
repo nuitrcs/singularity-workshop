@@ -241,11 +241,11 @@
                     <h4>Exercise 4:</h4>
                     <p>Pull a bioinformatics image and run it.</p>
                     <pre class="bash"><code data-trim data-noescape>
-                        $ singularity pull docker://biocontainers/blast
+                        $ singularity pull blast.sif docker://biocontainers/blast:2.2.31
                         $ cp /projects/w10001/data/* . # copy zebrafish.1.protein.faa and P04156.fasta to cwd
-                        $ singularity exec blast_latest.sif makeblastdb \
+                        $ singularity exec blast.sif makeblastdb \
                             -in zebrafish.1.protein.faa -dbtype prot
-                        $ singularity exec blast_latest.sif blastp \
+                        $ singularity exec blast.sif blastp \
                             -query P04156.fasta -db zebrafish.1.protein.faa \
                             -out results.txt
                     </code></pre>
