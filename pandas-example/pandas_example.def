@@ -5,6 +5,7 @@ From: continuumio/miniconda3
     pandas_example.py /
 
 %post
+    curl https://raw.githubusercontent.com/nuitrcs/singularity-workshop/master/pandas-example/pandas_example.py >/pandas_example.py
     /opt/conda/bin/conda install pandas -y
 
 %runscript
