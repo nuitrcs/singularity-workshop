@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: ubuntu:hirsute
+
+%post
+    apt-get update -y && apt-get install -y gcc-10
+
+    mkdir -p /opt/bin
+
+    echo "#include <stdio.h>" >> /opt/hello_world.c
+    echo "int main() {" >> /opt/hello_world.c
+    echo "    printf(\"Hello world\");" >> /opt/hello_world.c
+    echo "    return 0;" >> /opt/hello_world.c
+    echo "}" >> /opt/hello_world.c
+
+    gcc-10 /opt/hello_world.c -o /opt/bin/hello_world
+
+%runscript
+    /opt/bin/hello_world
+

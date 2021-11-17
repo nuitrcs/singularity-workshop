@@ -1,9 +1,0 @@
-Bootstrap: docker
-From: continuumio/miniconda3
-
-%post
-    wget -O /pandas_example.py https://raw.githubusercontent.com/nuitrcs/singularity-workshop/master/pandas-example/pandas_example.py
-    /opt/conda/bin/conda install pandas -y
-
-%runscript
-    python /pandas_example.py "$@"
